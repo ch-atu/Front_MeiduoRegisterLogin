@@ -26,7 +26,7 @@ var vm = new Vue({
     methods: {
         // 检查用户名
         check_username: function () {
-            var len = this.username.length;
+            const len = this.username.length;
             if (len < 5 || len > 20) {
                 this.error_name_message = '请输入5-20个字符的用户名';
                 this.error_name = true;
@@ -179,7 +179,17 @@ var vm = new Vue({
                             if ('non_field_errors' in error.response.data) {
                                 this.error_sms_code_message = error.response.data.non_field_errors[0];
                             } else {
-                                this.error_sms_code_message = '数据有误';
+                                if (error.response.data["username"]) {
+                                    this.error_name_message = '用户名已存在';
+                                    this.error_name=true;
+                                }
+                                else if (error.response.data["mobile"]) {
+                                    this.error_phone_message = '该手机号已被注册';
+                                    this.error_phone=true;
+                                }
+                                else {
+                                    this.error_sms_code_message = '数据有误'
+                                }
                             }
                             this.error_sms_code = true;
                         } else {
