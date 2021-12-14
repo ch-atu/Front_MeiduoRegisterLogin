@@ -33,34 +33,36 @@ var vm = new Vue({
             } else {
                 this.error_name = false;
             }
-            // // 检查重名
-            // if (this.error_name === false) {
-            //     axios.get(this.host + '/usernames/' + this.username + '/count/', {
-            //         responseType: 'json'
-            //     })
-            //         .then(response => {
-            //             if (response.data.count > 0) {
-            //                 this.error_name_message = '用户名已存在';
-            //                 this.error_name = true;
-            //             } else {
-            //                 this.error_name = false;
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.log(error.response.data);
-            //         })
-            // }
+            // 检查重名
+            if (this.error_name === false) {
+                axios.get(this.host + '/username/' + this.username + '/count/', {
+                    responseType: 'json'
+                })
+                    .then(response => {
+                        if (response.data.count > 0) {
+                            this.error_name_message = '用户名已存在';
+                            this.error_name = true;
+                        } else {
+                            this.error_name = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error.response.data);
+                    })
+            }
         },
+        // 校验密码是否符合格式
         check_pwd: function () {
             var len = this.password.length;
             this.error_password = len < 8 || len > 20;
         },
+        // 校验两次密码是否相同
         check_cpwd: function () {
             this.error_check_password = this.password !== this.password2;
         },
         // 检查手机号
         check_phone: function () {
-            var re = /^1[3-9]\d{9}$/;
+            const re = /^1[3-9]\d{9}$/;
             if (re.test(this.mobile)) {
                 this.error_phone = false;
             } else {
@@ -68,27 +70,29 @@ var vm = new Vue({
                 this.error_phone = true;
             }
 
-            // //检查手机号是否存在
-            // if (this.error_phone === false) {
-            //     axios.get(this.host + '/mobiles/' + this.mobile + '/count/', {
-            //         responseType: 'json'
-            //     })
-            //         .then(response => {
-            //             if (response.data.count > 0) {
-            //                 this.error_phone_message = '手机号已存在';
-            //                 this.error_phone = true;
-            //             } else {
-            //                 this.error_phone = false;
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.log(error.response.data);
-            //         })
-            // }
+            //检查手机号是否存在
+            if (this.error_phone === false) {
+                axios.get(this.host + '/mobile/' + this.mobile + '/count/', {
+                    responseType: 'json'
+                })
+                    .then(response => {
+                        if (response.data.count > 0) {
+                            this.error_phone_message = '手机号已存在';
+                            this.error_phone = true;
+                        } else {
+                            this.error_phone = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error.response.data);
+                    })
+            }
         },
+        // 校验是否有输入验证码
         check_sms_code: function () {
             this.error_sms_code = !this.sms_code;
         },
+        // 校验是否勾选协议
         check_allow: function () {
             this.error_allow = !this.allow;
         },
@@ -115,9 +119,9 @@ var vm = new Vue({
                 .then(response => {
                     // 表示后端发送短信成功
                     // 倒计时60秒，60秒后允许用户再次点击发送短信验证码的按钮
-                    var num = 60;
+                    let num = 60;
                     // 设置一个计时器
-                    var t = setInterval(() => {
+                    const t = setInterval(() => {
                         if (num === 1) {
                             // 如果计时器到最后, 清除计时器对象
                             clearInterval(t);
@@ -130,7 +134,7 @@ var vm = new Vue({
                             // 展示倒计时信息
                             this.sms_code_tip = num + '秒';
                         }
-                    }, 1000, 60)
+                    }, 1000);
                 })
                 .catch(error => {
                     if (error.response.status === 400) {
@@ -152,9 +156,18 @@ var vm = new Vue({
             this.check_sms_code();
             this.check_allow();
 
-            if (this.error_name === false && this.error_password === false && this.error_check_password === false
-                && this.error_phone === false && this.error_sms_code === false && this.error_allow === false) {
-                axios.post(this.host + '/users/', {
+            if (this.error_name === false
+                &&
+                this.error_password === false
+                &&
+                this.error_check_password === false
+                &&
+                this.error_phone === false
+                &&
+                this.error_sms_code === false
+                &&
+                this.error_allow === false) {
+                axios.post(this.host + '/user/', {
                     username: this.username,
                     password: this.password,
                     password2: this.password2,

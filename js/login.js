@@ -21,11 +21,7 @@ var vm = new Vue({
         },
         // 检查数据
         check_username: function () {
-            if (!this.username) {
-                this.error_username = true;
-            } else {
-                this.error_username = false;
-            }
+            this.error_username = !this.username;
         },
         check_pwd: function () {
             if (!this.password) {
@@ -40,7 +36,7 @@ var vm = new Vue({
             this.check_username();
             this.check_pwd();
 
-            if (this.error_username == false && this.error_pwd == false) {
+            if (this.error_username === false && this.error_pwd === false) {
                 axios.post(this.host + '/authorizations/', {
                     username: this.username,
                     password: this.password
@@ -65,14 +61,14 @@ var vm = new Vue({
                         }
 
                         // 跳转页面
-                        var return_url = this.get_query_string('next');
+                        let return_url = this.get_query_string('next');
                         if (!return_url) {
                             return_url = '/index.html';
                         }
                         location.href = return_url;
                     })
                     .catch(error => {
-                        if (error.response.status == 400) {
+                        if (error.response.status === 400) {
                             this.error_pwd_message = '用户名或密码错误';
                         } else {
                             this.error_pwd_message = '服务器错误';
