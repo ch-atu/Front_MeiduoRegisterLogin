@@ -52,7 +52,7 @@ var vm = new Vue({
             // }
         },
         check_pwd: function () {
-            var len = this.password.length;
+            const len = this.password.length;
             this.error_password = len < 8 || len > 20;
         },
         check_cpwd: function () {
@@ -152,8 +152,17 @@ var vm = new Vue({
             this.check_sms_code();
             this.check_allow();
 
-            if (this.error_name === false && this.error_password === false && this.error_check_password === false
-                && this.error_phone === false && this.error_sms_code === false && this.error_allow === false) {
+            if (this.error_name === false
+                &&
+                this.error_password === false
+                &&
+                this.error_check_password === false
+                &&
+                this.error_phone === false
+                &&
+                this.error_sms_code === false
+                &&
+                this.error_allow === false) {
                 axios.post(this.host + '/users/', {
                     username: this.username,
                     password: this.password,
