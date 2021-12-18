@@ -167,7 +167,7 @@ var vm = new Vue({
                 this.error_sms_code === false
                 &&
                 this.error_allow === false) {
-                
+
                 axios.post(this.host + '/user/', {
                     username: this.username,
                     password: this.password,
